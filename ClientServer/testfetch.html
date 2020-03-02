@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+</head>
+<body>
+ 
+<script>
+fetch('http://api.openweathermap.org/data/2.5/weather?q=Smila&appid=d81029a0acf74508d950b9c4307ce255')
+  .then(response => response.json())
+  .then(data => {
+    console.log(data)
+  });
+</script>
+</body>
+</html>

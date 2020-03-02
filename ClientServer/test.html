@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+</head>
+<body>
+ 
+<script>
+
+var request = new XMLHttpRequest();
+request.open("GET", "http://www.7timer.info/bin/meteo.php?lon=113.2&lat=23.1&ac=0&unit=metric&output=json&tzshift=0", false);
+request.send();
+
+var status = request.status;
+
+if(status==200) {
+  document.body.appendChild(document.createTextNode("Текст відповіді: " + request.responseText));
+} else if(status==404) {
+    document.body.appendChild(document.createTextNode("Ресурс не найдено"));
+} else {
+  document.body.appendChild(document.createTextNode(request.statusText));
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="button" value="hello" onclick="ClickButton()" />
+    <div id="s">
+      <input type="button" value="Suicide" id="suicide" />
+    </div>
+    <hr />
+    <div onclick="Targeting(event)">
+      <input type="button" value="1" id="1" />
+      <input type="button" value="2" id="2" />
+      <input type="button" value="3" id="3" />
+      <input type="button" value="4" id="4" />
+      <input type="button" value="5" id="5" />
+    </div>
+    <hr />
+    <div id="list">
+      <input id="inpt" />
+      <input type="button" value="ADD" id="Add" onclick="listadd()" />
+      <ol id="listli">
+        <li draggable="true">1</li>
+        <li draggable="true">2</li>
+        <li draggable="true">3</li>
+      </ol>
+    </div>
+    <hr />
+    <script>
+      //zav 1
+      function ClickButton() {
+        alert("hello");
+      }
+      //zav 2
+      document.getElementById("suicide").addEventListener("click", Suicide);
+      function Suicide() {
+        document
+          .getElementById("suicide")
+          .removeEventListener("click", Suicide);
+        alert("hello1");
+      }
+      //zav 3
+      function Targeting(event) {
+        console.log(event);
+        let target = event.target;
+        console.log(target);
+        if (target.tagName != "INPUT") return;
+        Coloring(target);
+      }
+      function Coloring(but) {
+        let selectedbut = but;
+        selectedbut.style.backgroundColor = "black";
+      }
+
+      //zav 4-5
+
+      let inpt = document.getElementById("inpt");
+      function listadd() {
+        if (inpt.value == null) return;
+        var ols = document.getElementById("list").querySelectorAll("ol");
+        var li;
+        for (var i = 0; i < ols.length; i++) {
+          li = document.createElement("li");
+          li.innerText = inpt.value;
+          li.draggable = true;
+          ols[i].appendChild(li);
+        }
+        inpt.value = null;
+      }
+
+      let temp = inpt.value;
+
+      document.getElementById("listli").onmouseover = function(event) {
+        let target = event.target;
+        console.log(target.innerText);
+        // if(target.tagName !='li') return;
+        inpt.value = target.innerText;
+      };
+      document.getElementById("listli").onmouseout = function(event) {
+        inpt.value = temp;
+      };
+
+      // zav 6
+      let elemli = document.getElementById("listli");
+      var dragEl;
+
+      function _onDragOver(evt) {
+        evt.preventDefault();
+        evt.dataTransfer.dropEffect = "move";
+
+        var target = evt.target;
+        if (target && target !== dragEl && target.nodeName == "LI") {
+          elemli.insertBefore(dragEl, target.nextSibling || target);
+        }
+      }
+
+      function _onDragEnd(evt) {
+        evt.preventDefault();
+
+        dragEl.classList.remove("elem");
+        elemli.removeEventListener("dragover", _onDragOver, false);
+        elemli.removeEventListener("dragend", _onDragEnd, false);
+      }
+
+      elemli.addEventListener(
+        "dragstart",
+        function(evt) {
+          dragEl = evt.target;
+          console.log(evt);
+
+          evt.dataTransfer.effectAllowed = "move";
+          evt.dataTransfer.setData("Text", dragEl.textContent);
+
+          elemli.addEventListener("dragover", _onDragOver, false);
+          elemli.addEventListener("dragend", _onDragEnd, false);
+
+          setTimeout(function() {
+            dragEl.classList.add("elem");
+          }, 0);
+        },
+        false
+      );
+    </script>
+  </body>
+</html>

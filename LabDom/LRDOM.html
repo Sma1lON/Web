@@ -1,0 +1,228 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>DOM</title>
+  </head>
+  <body>
+    <div id="zav">
+      <input type="button" onclick="zav7()" value="zav7" />
+      <ol id="list">
+        <li>1<img src="img/1.jpg" alt="ANIME" width="30px" height="30px" /></li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <p>PINK</p>
+        <li>5</li>
+        <li>6</li>
+        <p>PINK</p>
+        <li>7</li>
+        <li>8<img src="img/2.jpg" alt="ANIME" width="30px" height="30px" /></li>
+        <li>9</li>
+        <p>NOT PINK</p>
+        <li>0</li>
+        <p>NOT PINK</p>
+      </ol>
+      <hr />
+      <div id="zav4"></div>
+      <hr />
+      <img src="img/3.jpg" alt="ANIME" width="30px" height="30px" />
+      <div id="zona"></div>
+    </div>
+    <script>
+      const data = {
+        tag: "div",
+        id: "todo-list",
+        className: "center",
+        attr: {
+          title: "Dynamic html"
+        },
+        children: [
+          {
+            tag: "h3",
+            className: "title",
+            children: ["ToDo list"]
+          },
+          {
+            tag: "div",
+            className: "navigation",
+            children: [
+              {
+                tag: "input",
+                id: "item-input",
+                attr: {
+                  placeholder: "Item text"
+                }
+              },
+              {
+                tag: "input",
+                id: "submit",
+                attr: {
+                  type: "submit",
+                  value: "Add"
+                }
+              }
+            ]
+          },
+          {
+            tag: "div",
+            className: "content",
+            children: [
+              {
+                tag: "ul",
+                id: "todo-items",
+                className: "list",
+                children: [
+                  {
+                    tag: "li",
+                    children: ["Make example"]
+                  },
+                  {
+                    tag: "li",
+                    className: "done",
+                    children: ["Drink coffee"]
+                  },
+                  {
+                    tag: "li",
+                    className: "done",
+                    children: ["Have a nice day"]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      };
+
+      //zav 1
+      var New = document.createElement("h1");
+      New.setAttribute("id", "heading");
+      var text = document.createTextNode("DOM");
+      New.appendChild(text);
+      document.body.appendChild(New);
+
+      //zav 2
+      console.log(document.getElementById("heading").style);
+      document.getElementById("heading").style.color = "red";
+      document.getElementById("heading").style.textAlign = "center";
+      document.getElementById("heading").style.borderStyle = "dotted";
+      document.getElementById("heading").style.borderColor = "red";
+
+      //zav 3
+      var list = document.getElementById("list");
+      var fiveli = list.getElementsByTagName("li")[5];
+      var newli = document.createElement("li");
+      newli.innerHTML = "Новий елемент";
+      list.insertBefore(newli, fiveli);
+
+      //zav 4
+      /* function create(data) {
+        //var block = document.createElement(data.name);
+        //zav4.appendChild(block);
+
+        tag = ["id", "className", "type", "value", "placeholder", "title"];
+        console.log(tag);
+        for (i = 0; i < tag.length; i++) {
+          for (tag[i] in data) {
+            el = document.createElement(tag[i]);
+            zav4.appendChild(el);
+          }
+        }
+        */
+
+      function render(data) {
+        var elemr = document.createElement(data.tag);
+        if (data.id != undefined) {
+          elemr.setAttribute("id", data.id);
+        }
+        if (data.className != undefined) {
+          elemr.setAttribute("className", data.className);
+        }
+        if (data.attr != undefined) {
+          if (data.attr.type != undefined) {
+            elemr.setAttribute("type", data.attr.type);
+          }
+          if (data.attr.value != undefined) {
+            elemr.setAttribute("value", data.attr.value);
+          }
+          if (data.attr.placeholder != undefined) {
+            elemr.setAttribute("placeholder", data.attr.placeholder);
+          }
+          if (data.attr.title != undefined) {
+            elemr.setAttribute("title", data.attr.title);
+          }
+        }
+        zav4.appendChild(elemr);
+        if (
+          data.children == undefined ||
+          data.children == null ||
+          data.children == false
+        ) {
+          return data.parentNode;
+        } else {
+          data.children.forEach(child => {
+            if (typeof child == "string") {
+              var text = document.createTextNode(child);
+              elemr.appendChild(text);
+              return data.parentNode;
+            } else {
+              render(child, elemr);
+            }
+          });
+        }
+      }
+      render(data);
+      // }
+      //zav 6
+      zona = document.getElementById("zona");
+
+      function rand() {
+        var obj = {},
+          arr = [15];
+        obj[15] = true;
+        length = 15;
+        while (length) {
+          var rnd = Math.floor(Math.random() * 16);
+          if (!obj[rnd]) {
+            obj[rnd] = true;
+            length--;
+            arr[Math.random() > 0.5 ? "push" : "unshift"](rnd);
+          }
+        }
+
+        return arr;
+      }
+
+      masr = rand();
+      for (let i = 0; i < masr.length; i++) {
+        pole = document.createElement("button");
+        if (masr[i] == 0) {
+          pole.innerHTML = "&ensp;";
+        } else {
+          pole.innerText = masr[i];
+        }
+        pole.style.height = "25%";
+        pole.style.width = "25%";
+        zona.appendChild(pole);
+      }
+
+      //zav 7
+      function zav7() {
+        let img = document.getElementsByTagName("img");
+        let p = document.getElementsByTagName("p");
+        console.log(p);
+        var t, l;
+        zav = document.getElementById("zav");
+        for (let i = 0; i < img.length; i++) {
+          img[i].style.left = l;
+          img[i].style.top = t;
+          l += 50;
+          t += 50;
+          document.body.prepend(img[i]);
+        }
+        for (let j = 0; j < p.length / 2; j++) {
+          p[j].setAttribute("style", "color:pink;");
+        }
+      }
+    </script>
+  </body>
+</html>
